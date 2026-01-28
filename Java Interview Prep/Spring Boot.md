@@ -1,0 +1,181 @@
+
+| Meta-annotations                                                                                                                                                                                                                                                                                                                                        |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@SpringBootApplication` = `@Configuration` + `@EnableAutoConfiguration` + `@ComponentScan`                                                                                                                                                                                                                                                             |
+| `@RestController` = `@Controller` + `@ResponseBody` (class)                                                                                                                                                                                                                                                                                             |
+| `@Repository` = `@Component` (plus exception translation mechanism)                                                                                                                                                                                                                                                                                     |
+| `@GetMapping` = `@RequestMapping(method = RequestMethod.GET)`\|<br>`@PostMapping` = `@RequestMapping(method = RequestMethod.POST)`\|<br>`@PutMapping` = `@RequestMapping(method = RequestMethod.PUT)`\|<br>`@DeleteMapping` = `@RequestMapping(method = RequestMethod.DELETE)`\|<br>`@PatchMapping` = `@RequestMapping(method = RequestMethod.PATCH)`\| |
+
+## @Component 
+- **default** bean name : the class name w/ the first letter lowercased (e.g. myClass for `MyClass` )
+- To assign a **custom name**, pass it as a string argument : `@Component("myCustomBean")`
+	- NOTE: cannot assign multiple Names(aliases) for any Annotation except for `@Bean` methods
+	- The default bean name for a method annotated with `@Bean` is the method name itself, exactly as spelled. It does not automatically lowercase the first character or adjust the casing for `@Bean` methods. 
+![[Spring Annotations.png]]
+
+![[SpringBoot meta annon.png]]
+- **@RequestBody**: When you use this on a method parameter, Spring automatically **deserializes** the HTTP request body (like JSON or XML) into a Java object.
+- **@ResponseBody**: When you use this on a method (or the whole controller), Spring automatically **serializes** the Java object you return into the HTTP response body.
+
+## @RestController
+`@RestController` = `@Controller` + `@ResponseBody`
+
+Only `@Controller` and `@RestController` _enable_ request mapping processing within the web context.
+
+| Annotation        | Purpose           | Return Type        | Example Use Case |
+| ----------------- | ----------------- | ------------------ | ---------------- |
+| `@Controller`     | Web pages (views) | View name (String) | HTML templates   |
+| `@RestController` | REST APIs (data)  | Data (JSON/XML)    | REST endpoints   |
+###### Example: @Controller
+```Java
+@Controller
+public class HelloController {
+
+    @GetMapping("/hello")
+    public String hello(Model model) {
+        model.addAttribute("message", "Hello World!");
+        return "index"; // Returns the view named "index"
+    }
+}
+```
+###### Example: @RestController
+```Java
+@RestController
+public class GreetingController {
+
+    @GetMapping("/greeting")
+    public Greeting greeting(@RequestParam(defaultValue = "World") String name) {
+        return new Greeting(counter.incrementAndGet(), String.format("Hello, %s!", name));
+    }
+}
+```
+
+##### How Do You Map Requests?
+- **Class-level mapping:** Use `@RequestMapping` on the controller class to define a base path for all its endpoints.
+- **Method-level mapping:** Use `@RequestMapping`, `@GetMapping`, `@PostMapping`, etc., on methods to map HTTP paths and types for specific endpoints.
+```Java
+@RestController
+@RequestMapping("/api") // base path for all endpoints in this controller
+public class DemoController {
+
+    @GetMapping("/hello") // maps GET /api/hello
+    public String hello() {
+        return "Hello World!";
+    }
+
+    @PostMapping("/submit") // maps POST /api/submit
+    public String submit(@RequestBody Data data) {
+        return "Submitted!";
+    }
+}
+```
+
+##### Handling Request Parameters
+@PathVariable, @RequestParam, @RequestBody
+
+| Annotation      | Description                               | Example Usage                                                            |
+| --------------- | ----------------------------------------- | ------------------------------------------------------------------------ |
+| `@PathVariable` | Binds a URL segment to a method parameter | `/users/{id} → @PathVariable Long id`                                    |
+| `@RequestParam` | Extracts query parameters from the URL    | `/users?role=admin → @RequestParam String role`                          |
+| `@RequestBody`  | Binds request JSON/XML body to an object  | `JSON POST → @RequestBody User user`                                     |
+|                 |                                           | never use `@RequestBody` with `@GetMapping` or GET endpoints             |
+|                 |                                           | request bodies should be handled on POST, PUT, or PATCH only (never GET) |
+Typical Usage
+- For **GET** requests, use `@RequestParam` (for query parameters), `@PathVariable` (for URL segments), or `@RequestHeader` (for headers).
+- For **POST/PUT/PATCH** requests, use `@RequestBody` to deserialize JSON/XML/etc into Java objects
+Best Practice
+- **Do not use @RequestBody with GET endpoints.**
+- Use `@RequestBody` with POST, PUT, or PATCH when you need to receive complex data.
+- Use `@RequestParam` and `@PathVariable` for retrieving parameters in GET requests.
+## @Service
+
+
+## @Repository
+
+
+## @Configuration
+
+Configuration of What? Spring IoC container
+How? instead of XML use Java class.
+How? using annotations 
+- `@Configuration` : a class-level annotation that indicates the class contains bean definitions for the Spring IoC container
+- `@Bean` is a method-level annotation used inside a @Configuration-annotated class to define a bean explicitly.
+
+| Annotation                 | Argument(s)                                     | Required?                | Example / Notes                                                                                                                           |
+| -------------------------- | ----------------------------------------------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `@SpringBootApplication`   | exclude, scanBasePackages                       | No                       | `@SpringBootApplication(scanBasePackages={"org.example"})`                                                                                |
+| `@EnableAutoConfiguration` | exclude, excludeName                            | No                       | `@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})`                                                                   |
+| `@ComponentScan`           | value (_)/basePackages (_)                      | Yes*                     | `@ComponentScan("org.example")`                                                                                                           |
+| `@Configuration`           | None                                            | N/A                      | Marks class as source of bean definitions                                                                                                 |
+| `@Component`               | value (bean name)                               | No                       | `@Component("myBean")`                                                                                                                    |
+| `@Service`                 | value (bean name)                               | No                       | `@Service("paymentService")`                                                                                                              |
+| `@Repository`              | value (bean name)                               | No                       | `@Repository("userRepo")`                                                                                                                 |
+| `@Controller`              | value (bean name)                               | No                       | `@Controller("mainController")`                                                                                                           |
+| `@RestController`          | value (bean name)                               | No                       | `@RestController("apiController")`                                                                                                        |
+| `@Bean`                    | name(s) (bean name/aliases)                     | No                       | `@Bean("mainBean")` or `@Bean({"a","b"})`                                                                                                 |
+| `@Autowired`               | required                                        | No                       | `@Autowired(required=false)`                                                                                                              |
+| `@Qualifier`               | value (*) (bean name/qualifier)                 | Yes*                     | `@Qualifier("mainBean")`                                                                                                                  |
+| `@Value`                   | value (*) (expression)                          | Yes*                     | `@Value("${property.name}")`                                                                                                              |
+| `@RequestMapping`          | value/path, method, produces, consumes          | No                       | `@RequestMapping("/greet", method=GET)`                                                                                                   |
+| `@GetMapping`              | value/path, produces (content negotiation)      | No                       | `@GetMapping("/users")`, `@GetMapping(value = "/info", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })` |
+| `@PostMapping`             | value/path                                      | No                       | `@PostMapping("/save")`                                                                                                                   |
+| `@RequestParam`            | value (*) (param name), required, defaultValue  | Yes* for value           | `@RequestParam("age")`, `@RequestParam(defaultValue="18")`                                                                                |
+| `@RequestBody`             | None                                            | N/A                      | Used on method parameter                                                                                                                  |
+| `@ResponseBody`            | None                                            | N/A                      | Used on method or class                                                                                                                   |
+| `@PathVariable`            | value (*) (variable name), required             | Yes* for value (Java 7-) | `@PathVariable("id")`, `@PathVariable(required=false)`                                                                                    |
+| `@Primary`                 | None                                            | N/A                      | Marks bean as primary for type-based autowiring                                                                                           |
+| `@Lazy`                    | value (true/false)                              | No                       | `@Lazy(true)`                                                                                                                             |
+| `@Profile`                 | value (*) (profile name)                        | Yes*                     | `@Profile("dev")`                                                                                                                         |
+| `@RequestHeader`           | value (*) (header name), required, defaultValue | Yes* for value           | `@RequestHeader("User-Agent")`                                                                                                            |
+| `@Cacheable`               | value (*) (cache name)                          | Yes*                     | `@Cacheable("books")`                                                                                                                     |
+| `@CacheEvict`              | value (*) (cache name)                          | Yes*                     | `@CacheEvict(value="books")`                                                                                                              |
+| `@EnableWebMvc`            | None                                            | N/A                      | Enables Spring MVC features                                                                                                               |
+| `@ConfigurationProperties` | prefix (*)                                      | Yes*                     | `@ConfigurationProperties(prefix = "app")`                                                                                                |
+| `@TestPropertySource`      | locations, properties                           | No                       | `@TestPropertySource(properties = "key=value")`                                                                                           |
+| `@DynamicPropertySource`   | (applied to static method; accepts registry)    | N/A                      | See docs; used on test methods for dynamic config                                                                                         |
+|                            |                                                 |                          |                                                                                                                                           |
+
+##### Spring Annotations for DI  
+
+| Annotation          | Purpose                                             |
+| ------------------- | --------------------------------------------------- |
+| `@Autowired`        | Marks a dependency to be injected by Spring         |
+| `@Qualifier`        | Resolves ambiguity when multiple beans of same type |
+| `@Inject` (JSR-330) | Java standard equivalent of @Autowired              |
+| `@Value`            | Injects values from properties or expressions       |
+
+
+# Exception Handling in Spring
+
+### How Exception Handling in Spring Differs from Traditional Java
+
+**Traditional Java Exception Handling** : Uses `try-catch-finally` blocks to catch process exceptions explicitly.  
+* Uses `try-catch-finally` blocks to catch and process exceptions explicitly.
+- You must manually wrap potentially failing code and handle or propagate exceptions yourself.
+- Exception handling is *local* to each method or block; there is *no built-in centralized way* to handle all exceptions in an application.*
+**Spring Exception Handling** : brings two main advancements 
+1. Declarative & Centralized Exception Handling 
+	1. **@ExceptionHandler methods**
+	2. **@ControllerAdvice (or @RestControllerAdvice)**
+	3. **Flexible responses**: Exception handlers can return custom views, JSON, specific HTTP statuses, etc.
+2. Automatic Exception Translation for Data Access (DAO Layer)
+
+
+Spring provides powerful and flexible exception handling for web applications, relying primarily on these components:
+1. **`@ExceptionHandler`** - Used inside a `@Controller`(or `@RestController`) to handle exceptions thrown by methods in that controller.
+2. **`@ControllerAdvice`** - Global exception handlers that apply across multiple controllers. 
+	- `@ControllerAdvice` can target all controllers or a subset based on annotation, package, or type.
+	- `@RestControllerAdvice` (since Spring 4.3) is like `@ControllerAdvice + @ResponseBody`—responses are serialized automatically (usually as JSON)
+
+| Aspect                            | Traditional Java                     | Spring/Spring Boot                                |
+| --------------------------------- | ------------------------------------ | ------------------------------------------------- |
+| Error Handling Structure          | Local (try-catch)                    | Declarative, centralized (annotation/AOP-based)   |
+| Global Exception Handling         | Manual (overriding main/error pages) | Easy with @ControllerAdvice/@RestControllerAdvice |
+| Data Access Exception Consistency | Must wrap/translate manually         | Auto-translate to DataAccessException hierarchy   |
+| Response Flexibility              | Custom per catch-block               | Handlers return view, JSON, HTTP status, etc.     |
+| Checked Exception Propagation     | Manual via throws/catches            | Checked -> Unchecked auto-translation (DAO/ORM)   |
+
+## Spring Data JPA
+
+
+![[springboot CRUD repo.png]]
