@@ -1,4 +1,4 @@
-# File Organisation
+# File Organization
 
 
 # DSA 
@@ -8,6 +8,30 @@
 - LeetCode
 
 ## Java Interview Prep
+
+
+# .gitignore
+
+#### Ignore directories
+_local_notes
+local
+
+.obsidian
+pvt
+PVT
+TEMP
+EXCLUDE
+#### Ignore notes with prefix 
+
+DRAFT*
+Draft*
+temp*
+TEMP*
+rough*
+ROUGH*
+Rough*
+
+
 
 
 

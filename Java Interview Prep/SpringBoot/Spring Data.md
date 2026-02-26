@@ -205,3 +205,5 @@ Analogy :
 - **Hibernate/EclipseLink/OpenJPA are Classes** that implement that interface
 ## Spring Data
 
+
+![[springboot CRUD repo.png]]

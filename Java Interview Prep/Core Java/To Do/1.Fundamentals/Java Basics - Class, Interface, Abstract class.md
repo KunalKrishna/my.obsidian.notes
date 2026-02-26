@@ -139,6 +139,21 @@ Here's why:
 - Implicit declaration of `Object` methods: 
     While interfaces do not extend `Object`, they implicitly declare abstract methods corresponding to the public instance methods of `Object` (like `equals()`, `hashCode()`, `toString()`). This allows any class implementing the interface to provide an implementation for these methods, which are ultimately inherited from `Object` by the implementing class.
 
+-----
+Types of Classes in Java : 
+1. Concrete Class : A regular class with complete implementations. 
+2. Abstract Class : Cannot be instantiated , may have abstract methods.
+3. Final Class : Cannot be extended. 
+4. Static Class (Nested Static Class) : A static inner class inside another class.
+5. Inner Class : A non-static class inside another class.
+6. Local Class : Defined inside a method.
+7. Anonymous Class : A class without a name, typically used for short-lived implementations.
+8. Singleton Class : Ensures only one instance exists.
+9. POJO (Plain Old Java Object) : A simple Java class without special restrictions.
+10. Record Class (Java 14+) : A compact class for immutable data.
+11. Enum Class : Defines a fixed set of constants.
+
+
 ---------------
 # abstract class :
 

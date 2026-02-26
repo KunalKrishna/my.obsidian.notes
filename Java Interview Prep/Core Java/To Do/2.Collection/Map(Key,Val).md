@@ -5,23 +5,46 @@
 
 **Best Practice:** **Keys in a Map should be Immutable.** This is why `String` and `Integer` are the most popular Map keys—they cannot change.
 
+
+All Collection items support CRUD operation
+- **C**reate : Constructors
+- **R**etrieve : or Access Methods : getXXX(), containsXXX() or through Iterator() 
+- **U**pdate : update specific entry based on key or index
+- **D**elete : delete specific index, entry, or clear entire collection
+- Meta functions : size()
+
 **Map** < I> 
-- protected Object clone()
-- boolean	equals(Object o)
-- int	hashCode()
-- int	size()
-- boolean containsKey(Object key)
-- Set< K>	keySet()   
-- boolean containsValue(Object value)
-- Collection< V>	values()
-- abstract Set<Map.Entry<K,V>> entrySet()
-- V	get(Object key)
-- V	put(K key, V value)
+```Java
+//Object Methods
+protected Object clone()
+boolean	equals(Object o)
+int	hashCode()
+
+// CREATE: Constructor
+
+// RETREIVE : Access Methods
+V	get(Object key)
+Set< K>	keySet()  
+Collection< V>	values()
+
+boolean containsKey(Object key)
+boolean containsValue(Object value)
+
+abstract Set<Map.Entry<K,V>> entrySet()
+
+// UPDATE
+V	put(K key, V value)
 - void	putAll(Map<  extends K, extends V> m
-- DELETION 
-	- V	remove(Object key)
-	- void	clear()
-	- boolean	isEmpty()
+
+
+// DELETE
+V	remove(Object key)
+void	clear()
+
+// Utility / Meta function
+int	size()
+boolean	isEmpty()
+
 - DEFAULT
 	- default V	merge(K key, V value, BiFunction< super V, super V, extends V> remappingFunction)
 	- default V	putIfAbsent(K key, V value)
@@ -29,6 +52,22 @@
 	- default V	replace(K key, V value)
 	- default boolean	replace(K key, V oldValue, V newValue)
 	- default void	replaceAll(BiFunction< super K, super V, extends V> function)
+
+```
+
+HashMap
+LinkedHashMap
+TreeMap
+ConcurrentHashMap
+
+
+
+|                   |                                                                                                                                         |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| HashMap           | Allows **one null key** and **multipl                                                                                                   |
+| LinkedHashMap     | Allows **one null key** and *                                                                                                   does not allow `null` key (throws `NullPointerException`) but Exception (Custom Comparator) . Allows **multiple null values**.  **.  **.  **.  **.  **.  **.  **.   if  |
+| ConcurrentHashMap | does _not_ al                                                                                                                           |
+
 
 Sub Interfaces : 
 - **SortedMap**<K,V> extends Map<K,V>

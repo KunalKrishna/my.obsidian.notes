@@ -12,6 +12,7 @@ Aim :
 	- Turn **ON** rightmost **0** : $x \vert (x+1)$ 
 	- Extracting the rightmost set bit / Isolate LSB / **BSF**
 		- Position of rightmost 1 : `(x & -x)`
+		- **Finding the LSB:** In Java, you extract the LSB using the bitwise operation `i & -i`.
 	- Extracting the rightmost unset bit / Isolate Lowest 0 / Isolate LSZ(Least Significant Zero )
 		- Position of rightmost 0 = pos of rm 1 in (nInverted = ~n)
 - More Tricks
@@ -617,6 +618,10 @@ Corollaries
 
 ### Extract Rightmost Set Bit : (x & -x)
 
+**Finding the LSB:**  You extract the LSB using the bitwise operation `i & -i`.
+
+Application : A **Binary Indexed Tree (BIT)**, also known as a **Fenwick Tree**, is a data structure that allows efficient updates and prefix sum queries on an array of numbers.
+
 ![[Pasted image 20260120011253.png]]
 
 ### Comparison of Bit Hacks
@@ -776,6 +781,8 @@ in such situation use concise version
 Count the number of 1's in a binary number (POPCNT is an x86 instruction)
 `x = x & (x-1)`
 
+Menta Image: **1s in a num** = **num of times rightmost 1 needs to be unset** 
+
 ```java
 int num = 29; // Binary : 11101
 int count = 0;
@@ -858,8 +865,6 @@ BIBLIOGRAPHY
 [How to Manipulate Bits in C and C++ \| HackerNoon](https://hackernoon.com/bit-manipulation-in-c-and-c-1cs2bux)
 [Code 360 by Coding Ninjas](https://www.naukri.com/code360/library/bit-manipulation-for-competitive-programming)
 [Bit manipulation - Algorithms for Competitive Programming](https://cp-algorithms.com/algebra/bit-manipulation.html)
-
-
 
 | Necessary Condition |
 | ------------------- |

@@ -1,4 +1,5 @@
-
+Adjacency Matrix
+Adjacency List 
 
 Types 
 - Undirected (symmetry) 
@@ -13,6 +14,27 @@ Types
 | Cyclic    | Acyclic (DAG)     | Cyclic   |
 |           |                   |          |
 
+| Algorithm | Ideal Graph Representation |
+| --------- | -------------------------- |
+|           |                            |
+|           |                            |
+| SSSP      |                            |
+|           |                            |
+|           |                            |
+| APSP      |                            |
+|           |                            |
+### Algorithm --> Ideal Graph Representation
+
+Shortest Path (s, t) 
+- 
+
+SSSP 
+- 
+
+APSP 
+- **Floyd-Warshall Algorithm**-> **Adjacency Matrix**.
+- 
+
 # Graph Representation
 
 ### Matrix representation
@@ -21,7 +43,72 @@ limited use
 ### Adjacency List
 (industry -standard)
 Many ways but which one is good for which algorithm?
-- 
+
+**Graph representation (Adjacency List):** Each node in a graph can store a list of adjacent nodes. An array of linked lists is an ideal structure for this.
+
+**`LinkedList<Integer>[] adjList;`**
+- an array named `adjList` where each index holds a `LinkedList` of `Integer` objects.
+- Used to represent graphs, where `adjList[i]` contains all neighbors connected to node `i`
+
+`LinkedList<Integer>[] listArray = new LinkedList[3];`
+
+```java
+class Graph {
+    private int vertices;
+    private LinkedList<Integer>[] adjList;
+    private int maxDepth;
+
+    @SuppressWarnings("unchecked")
+    public Graph(int vertices) {
+        this.vertices = vertices;
+        adjList = new LinkedList[vertices];
+        
+        for (int i = 0; i < vertices; i++) {
+            adjList[i] = new LinkedList<>();
+        }
+        this.maxDepth = 0;
+    }
+
+    public void addEdge(int src, int dest) {
+        adjList[src].add(dest);
+        // For an undirected graph, add the reverse edge as well
+        // adjList[dest].add(src); 
+    }
+
+    // Main method to find max depth
+    public int findMaxDepth(int startVertex) {
+        boolean[] visited = new boolean[vertices];
+        // Start DFS from the chosen startVertex with initial depth 1
+        dfsUtil(startVertex, visited, 1);
+        return maxDepth;
+    }
+
+    // Recursive DFS utility function
+    private void dfsUtil(int currentVertex, boolean[] visited, int currentDepth) {
+        visited[currentVertex] = true;
+        
+        // Update the global maximum depth found so far
+        if (currentDepth > maxDepth) {
+            maxDepth = currentDepth;
+        }
+
+        // Recur for all the unvisited neighbors
+        for (int neighbor : adjList[currentVertex]) {
+            if (!visited[neighbor]) {
+                // Pass currentDepth + 1 to the recursive call
+                dfsUtil(neighbor, visited, currentDepth + 1);
+            }
+        }
+        
+        // Note: For finding the *overall* maximum depth from *any* starting node
+        // in a general graph (not a tree), this visited array approach might not be
+        // sufficient, as a node could be reachable via a longer path from another
+        // component. For a single component/tree, this works fine.
+    }
+}
+```
+
+
 #### 1. Undirected Graph
 - **Input:** `edges[i] = [u, v]`
 - **Key Logic:** Since it is undirected, a connection from `u` to `v` implies a connection from `v` to `u`. You must add the edge to **both** lists.
@@ -272,3 +359,70 @@ public int dijkstra(int n, int[][] edges, int start, int end) {
 Why NOT the others?
 - **Adjacency Matrix (`int[][]`):** Takes $O(V^2)$ space. Iterating neighbors takes $O(V)$ time (scanning 0 to N) even if only 2 neighbors exist. This kills performance on sparse graphs.
 - **Adjacency Map (`Map<Map...>`):** While powerful, `HashMap` iteration is slower due to entry set overhead and lack of memory locality. It adds unnecessary overhead since we don't need $O(1)$ edge lookups.
+
+
+
+## Floyd-Warshall Algorithm
+
+### 1. Initialization (The Setup)
+You must initialize the matrix carefully to handle "Infinity" without causing integer overflow during addition.
+**Standard `INF` Value:** Use `1_000_000_000` (1e9) or `Integer.MAX_VALUE / 2`.
+- _Why?_ Because `Integer.MAX_VALUE + positive_weight` will wrap around to a negative number, breaking your logic.
+```Java
+public void floydWarshall(int n, int[][] edges) {
+    // 1. Define Safe Infinity
+    final int INF = (int) 1e9; 
+    
+    // 2. Initialize Matrix
+    int[][] dist = new int[n][n];
+    
+    // Fill with INF and set Diagonal to 0
+    for (int i = 0; i < n; i++) {
+        Arrays.fill(dist[i], INF);
+        dist[i][i] = 0;
+    }
+
+    // 3. Populate Weights from Input
+    // Assuming edges[i] = [u, v, w]
+    for (int[] edge : edges) {
+        int u = edge[0];
+        int v = edge[1];
+        int w = edge[2];
+        
+        dist[u][v] = w;
+        
+        // If Undirected, add: dist[v][u] = w;
+        // If Multiple edges exist between u,v, take min: 
+        // dist[u][v] = Math.min(dist[u][v], w);
+    }
+
+    // ... Run Algorithm (See Below) ...
+}
+```
+
+### 2. The Core Algorithm ($O(N^3)$)
+The beauty of Floyd-Warshall is its simplicity. It tries to improve the path between every pair `i` and `j` by going through an intermediate node `k`.
+```Java
+    // 4. The Triple Loop
+    // Order matters: 'k' (intermediate) MUST be the outer loop
+    for (int k = 0; k < n; k++) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                
+                // Optimization: Skip if intermediate path is unreachable
+                if (dist[i][k] == INF || dist[k][j] == INF) continue;
+                
+                // Relaxation
+                if (dist[i][k] + dist[k][j] < dist[i][j]) {
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                }
+            }
+        }
+    }
+    
+    // Result: dist[i][j] now holds the shortest path from i to j
+```
+### Critical Checklist for Interviews
+1. **Outer Loop `k`**: If you put `k` inside, the algorithm fails. `k` represents the "set of allowed intermediate nodes" expanding from $\{0\}$ to $\{0...n-1\}$.
+2. **Overflow Safety**: Always check `if (dist[i][k] == INF ...)` before adding, or use a Safe INF value.
+3. **Negative Cycles**: Floyd-Warshall can detect negative cycles. If `dist[i][i] < 0` after the algorithm finishes, a negative cycle involving node `i` exists.

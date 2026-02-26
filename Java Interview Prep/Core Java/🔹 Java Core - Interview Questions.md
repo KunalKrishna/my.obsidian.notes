@@ -21,7 +21,7 @@ Learning :
 ```Java
 // Pass-by-value illustration 
 
-//------ Passing an int and updating it inside a method
+//------ Passing a primitive(int) and updating it inside a method
 
 void changePrimitive(int x) { 
 	x = 20; // Only changes the local copy 
@@ -51,6 +51,7 @@ void reassign(Item obj) {
     obj.price = 999;    // This modifies the new object, not the original
 }
 
+// main method
 Item myItem = new Item();
 myItem.price = 100;
 
@@ -87,20 +88,6 @@ The contract between `equals()` and `hashCode()` is the "Constitution" of the Ja
 5. How does the Stream API work internally?  
 6. Difference between HashMap, LinkedHashMap, TreeMap.  
 7. Explain concurrency and ExecutorService.  
-8. What is REST API and what makes an API RESTful?  
-9. Difference between PUT, PATCH, and POST.  
-10. How does Spring Boot Auto-Configuration work?  
-  
-11. What is Dependency Injection in Spring?  
-12. Difference between @Component, @Service, @Repository.  
-13. How do JPA & Hibernate work internally?  
-14. Explain 1st-level & 2nd-level caching in Hibernate.  
-15. What is JWT authentication?  
-16. How do you design database schema for large systems?  
-17. What is ACID in databases?  
-18. Difference between monolithic & microservices.  
-19. How does Spring Cloud support microservices?  
-20. What is Docker and how do you containerize an app?
 
 
 Preparing for a Backend Engineer role ? Just DSA isn't enough 
@@ -122,3 +109,26 @@ Here are 10 topics that you must learn :
 |**String (Concatenation)**|High (creates many Strings)|Slowest|Implicit (Copying)|
 |**StringBuilder**|Medium (one object, resizing)|Fast|Explicit (`deleteCharAt`)|
 |**char[] Array**|**Lowest** (fixed size)|**Fastest**|Implicit (Overwriting)|
+
+# Performance Tuning
+
+1. Why does a Java application slow down over time without throwing errors?  
+2. What causes `OutOfMemoryError` even when heap size looks sufficient?  
+3. How does GC tuning impact application latency in production?  
+4. Why is `synchronized` sometimes worse than `Lock`?  
+5. How do thread leaks happen and how do you detect them?  
+6. Why does high CPU usage occur even when traffic is low?  
+7. What happens if a thread dies while holding a lock?  
+8. Why do applications behave differently under load compared to local runs?  
+9. How does JVM handle memory for threads vs objects?  
+10. What are real-world pitfalls of using parallel streams?  
+11. How can improper `equals`/`hashCode` crash a production system?  
+12. Why does caching sometimes reduce performance instead of improving it?  
+13. How do you debug deadlocks in a live Java application?  
+14. What happens if GC runs too frequently?  
+15. Why do microservices fail due to thread pool misconfiguration?  
+16. How does JVM warm-up affect benchmark results?  
+17. What are common mistakes with `CompletableFuture` in production?  
+18. Why does excessive logging slow down Java apps?  
+19. How do memory leaks occur without static references?  
+20. What JVM flags are most useful during performance issues?

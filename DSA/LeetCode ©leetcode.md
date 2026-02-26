@@ -1,7 +1,71 @@
 
+// array of lists of Long
+```java
+List<Long>[] minList = new List[n];
+for (int i = 0; i < n; i++) 
+	minList[i] = new ArrayList<>();
+```
+
+### Circular Array
+
+ [Transformed Array - LeetCode](https://leetcode.com/problems/transformed-array/solutions/7554297/x-from-left-n-x-from-right-by-thevagabon-2bqr/)
+
+
+-------
+
+### Circular Array Traversal 
+Trick : **Virtual Index Mapping** using % operator
+**Note**: standard modulo on negative numbers behaves weirdly in Java. Implementation is language specific.
+
+let : 
+```
+array size = n
+current index = i
+shift = k times
+target index = j (next or prev)
+
+// Virtual Index
+j = next = (i + k) % n; 
+j = prev = (i - k + n) % n; 
+```
+
+Trick : 
+* Forward : Add k, then mod
+* Backward: Subtract k, then add n, then mod
+
+
+| **Goal**                   | **Technique**                         | **Code Snippet**                         |
+| -------------------------- | ------------------------------------- | ---------------------------------------- |
+| **Simulate Linear Circle** | Iterate to `2*n`, access `i % n`      | `for(int i=0; i<2*n; i++) Use(arr[i%n])` |
+| **Move "Next" `k` steps**  | Add `k`, then mod                     | `next = (i + k) % n`                     |
+| **Move "Prev" `k` steps**  | Subtract `k`, add `n`, then mod       | `prev = (i - k + n) % n`                 |
+| **Fixed Size Window**      | Keep window size `w`, slide `start++` | `winEnd = (start + w - 1) % n`           |
+
+
+
+| Stage | shift (k) range                                                                                    | Formula                                                                               | Remark                                                    | Limitations                                                                                                                                           |
+| ----- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| I     | **0<k<=n**                                                                                         | next_idx = (i+k)%n                                                                    |                                                           |                                                                                                                                                       |
+|       | i.e. smaller +ve shift L or R                                                                      | prev_idx = (i-k+n)%n                                                                  |                                                           | Sign & Size dependent                                                                                                                                 |
+|       |                                                                                                    |                                                                                       |                                                           | `prev_idx` breaks if shift k > i+n because % of (-)ve is ill-defined or lang dependent (Unsafe for Java).                                             |
+|       |                                                                                                    |                                                                                       |                                                           |                                                                                                                                                       |
+| II    | **n < k**                                                                                          | next_idx = (i+k)%n                                                                    | same                                                      |                                                                                                                                                       |
+|       |                                                                                                    |                                                                                       | manual mod correction                                     | Still **conditioned on Sign**. i.e. fails if we shift right by k= -2. Assumes shift to be distance not displacement. Unsuitable for physics/vectors . |
+|       |                                                                                                    | prev_idx = ((i-k+n)%n + n) % n                                                        | Double Mod Idiom                                          |                                                                                                                                                       |
+|       |                                                                                                    | prev_idx = (i-(k%n)+n)%n                                                              | Pre-Reduce                                                |                                                                                                                                                       |
+|       |                                                                                                    |                                                                                       | Java 8+ Built-In Helper                                   |                                                                                                                                                       |
+|       |                                                                                                    | Math.floorMod(i-k, n)                                                                 | Pro-Java Way                                              |                                                                                                                                                       |
+|       |                                                                                                    |                                                                                       |                                                           |                                                                                                                                                       |
+| III   | $k\in \mathbb{Z}$                                                                                  | nextIndex = (((i + k) % n) + n) % n;                                                  | Universal "Old School" Way (Compatible with C++/Old Java) | None. Size and Sign agnostic. treats k as a signed displacement.                                                                                      |
+|       | k = displacement (+ve for Right, -ve for Left)                                                     | nextIndex = Math.floorMod(i + k, n);                                                  | Modern Java Way (Java 8+)                                 | works for **any** integer `k` (positive, negative, huge, or small).                                                                                   |
+|       |                                                                                                    |                                                                                       |                                                           |                                                                                                                                                       |
+| IV    | Let `dir` be the direction: `+1` for Right/Next, `-1` for Left/Prev. Let `steps` be the magnitude. | $$\text{new\_index} = \text{Math.floorMod}(i + (\text{dir} \times \text{steps}), n)$$ | **one** formula to rule them all                          |                                                                                                                                                       |
+|       |                                                                                                    |                                                                                       |                                                           |                                                                                                                                                       |
+One Formula to rule them all : 
+
 
 ----------------
-
+[Minimum Cost Path with Teleportations - LeetCode](https://leetcode.com/problems/minimum-cost-path-with-teleportations/?envType=daily-question&envId=2026-01-29)
 
 
 
