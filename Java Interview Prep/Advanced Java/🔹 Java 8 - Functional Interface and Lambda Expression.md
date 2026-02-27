@@ -325,7 +325,10 @@ A function is called a _higher-order function_ if:
 - **Optional Class:** A container object often returned by Stream operations to handle nulls safely. 
 - **CompletableFuture:** For asynchronous programming, which relies heavily on Functional Interfaces.
 
-![[Lambda.svg]]
+
+![[Lambda.png]]
+
+
 
 #### Topic 1: Default & Static Methods in Interfaces
 - Why `default` was needed ? maintain backward compatibility 
