@@ -1,8 +1,10 @@
-1.2 Collection API
-1.5 Generics
-1.8 Functional Programming (Lambda Expression, Streams API)
+Imp Timeline : 
+- 1.2 Collection API
+- 1.5 Generics
+- 1.8 Functional Programming (Lambda Expression, Streams API++)
 
-What was the need of FP in Java? (Why Java 8 introduced FP ? )
+What was the need of FP in Java? Why Java 8 introduced FP?
+
 How Java 8 introduced FP in Java? What architectural change Java introduced to enable FP in Java? 
 ## Meta Questions 
 ###  What is the need of Functional Programming(Java 8) in Java ?
@@ -1423,5 +1425,8 @@ But in modern microservices (which you mentioned you are interested in), you oft
 ![[streams API features.png]]
 
 ----------------------
+
+Reduce : [how to reduce a Stream](https://x.com/java/status/2026683666915557829?s=20)
+
 #### Bibliography : 
 [Lambda Expressions in Java - Full Simple Tutorial - YouTube](https://youtu.be/tj5sLSFjVj4)

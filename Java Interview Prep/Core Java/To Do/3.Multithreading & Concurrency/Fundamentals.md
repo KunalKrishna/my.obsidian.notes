@@ -48,7 +48,7 @@ java.lang
 - [ ] Producer/Consumer Queue
 
 
-# Thread Lifecycle
+# Thread 🧵Lifecycle 🔁
 
 six core states in the Java thread lifecycle:
 1. `NEW`, 
@@ -58,17 +58,17 @@ six core states in the Java thread lifecycle:
 5. `TIMED_WAITING`, and 
 6. `TERMINATED`
 
-To memorize the 6 Java thread lifecycle states (**N**ew, **R**unnable, **B**locked, **W**aiting, **T**imed_Waiting, **T**erminated), use the mnemonic:
-
-**N**ow **R**unning, **B**ut **W**aiting **T**ime **T**erminated.
-Alternatively, the acronym **NRBWTT** (pronounced _N-R-Bew-T-T_) covers all states in their general flow
+**Mnemonic** : **N**ow **R**unning, **B**ut **W**aiting **T**ime **T**erminated.
+acronym **NRBWTT** (pronounced _N-R-Bew-T-T_)  
 
  Think of a thread as a worker: it is **N**ewborn, starts **R**unning, gets **B**locked by a door, decides to **W**ait, takes a **T**imed break, and finally **T**erminates.
  
-Think of a thread as a worker: 
-   it is Newborn 👶, 
-	                starts Running 🏃, 
-		                gets Blocked by a door 🚪🏃‍♀️, 
-								decides to Wait ⏳,
-				                                               takes a Timed break ⏱️, and
-													   finally Terminates ☠️💀
+ ```js
+ Think of a thread 🧵 as a worker: 
+    it is Newborn 👶, 
+				starts Running 🏃, 
+						🚪gets Blocked by a door 🏃‍♀️, 
+									decides to Wait ⏳,
+											takes a Timed break ⏱️, and
+													finally Terminates ☠️💀
+ ```
