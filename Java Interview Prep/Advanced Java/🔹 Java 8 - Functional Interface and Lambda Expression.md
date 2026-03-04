@@ -325,8 +325,9 @@ A function is called a _higher-order function_ if:
 - **Optional Class:** A container object often returned by Stream operations to handle nulls safely. 
 - **CompletableFuture:** For asynchronous programming, which relies heavily on Functional Interfaces.
 
+https://github.com/KunalKrishna/my.obsidian.notes/blob/main/pics/Lambda.png
 
-![[Lambda.png]]
+![[Lambda.png]] 
 
 
 
