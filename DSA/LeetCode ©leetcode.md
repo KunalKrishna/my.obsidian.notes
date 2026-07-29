@@ -1,4 +1,4 @@
-
+![[DSA_pattern.png]]
 // array of lists of Long
 ```java
 List<Long>[] minList = new List[n];

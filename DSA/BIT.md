@@ -42,3 +42,5 @@ public NumArray(int[] nums) {
     }
 }
 ```
+
+What is BIT in DSA?
